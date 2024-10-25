@@ -21,7 +21,7 @@
 <h2>Getting Started</h2>
 <h3>1. Clone the Repository</h3>
 <div class="code-block">
-    <code>git clone https://github.com/your-username/weather-app.git</code><br>
+    <code>git clone https://github.com/malamaro/weather-app.git</code><br>
     <code>cd weather-app</code>
 </div>
 
