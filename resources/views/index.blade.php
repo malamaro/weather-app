@@ -162,62 +162,19 @@
                                 </div>
                                 <div class="d-flex align-items-stretch py-2 gap-2" id="currentWeatherDisplay"
                                     style="width: 100%;overflow-x:scroll">
-                                    <div class="col-md-2 ">
-                                        <div class="card text-center border-0 px-0 placeholder-glow">
-                                            <div class="card-body px-0">
-                                                <span class="placeholder col-4"></span>
-                                                <br>
-                                                <i class="bi bi-cloud-hail fs-2 placeholder col-6"></i>
-                                                <br>
-                                                <span class="placeholder col-2"></span>
+                                    @for ($i = 0; $i < 7; $i++)
+                                        <div class="col-md-2 ">
+                                            <div class="card text-center border-0 px-0 placeholder-glow">
+                                                <div class="card-body px-0">
+                                                    <span class="placeholder col-4"></span>
+                                                    <br>
+                                                    <i class="bi bi-cloud-hail fs-2 placeholder col-6"></i>
+                                                    <br>
+                                                    <span class="placeholder col-2"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-2 ">
-                                        <div class="card text-center border-0 px-0 placeholder-glow">
-                                            <div class="card-body px-0">
-                                                <span class="placeholder col-4"></span>
-                                                <br>
-                                                <i class="bi bi-cloud-hail fs-2 placeholder col-6"></i>
-                                                <br>
-                                                <span class="placeholder col-2"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 ">
-                                        <div class="card text-center border-0 px-0 placeholder-glow">
-                                            <div class="card-body px-0">
-                                                <span class="placeholder col-4"></span>
-                                                <br>
-                                                <i class="bi bi-cloud-hail fs-2 placeholder col-6"></i>
-                                                <br>
-                                                <span class="placeholder col-2"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 ">
-                                        <div class="card text-center border-0 px-0 placeholder-glow">
-                                            <div class="card-body px-0">
-                                                <span class="placeholder col-4"></span>
-                                                <br>
-                                                <i class="bi bi-cloud-hail fs-2 placeholder col-6"></i>
-                                                <br>
-                                                <span class="placeholder col-2"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 ">
-                                        <div class="card text-center border-0 px-0 placeholder-glow">
-                                            <div class="card-body px-0">
-                                                <span class="placeholder col-4"></span>
-                                                <br>
-                                                <i class="bi bi-cloud-hail fs-2 placeholder col-6"></i>
-                                                <br>
-                                                <span class="placeholder col-2"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    @endfor
                                 </div>
                             </div>
                         </div>
@@ -291,28 +248,30 @@
                             <h6 class="card-title text-black-50">16 - DAY FORECAST</h6>
                         </div>
                     </div>
-                    <div class="card-body" style="height: 73.5vh; overflow-y:scroll">
-                        <div class="accordion accordion-flush" id="forecastAccordion">
-                            <h2 class="accordion-header" id="heading${index}">
-                                <button class="accordion-button" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapse${index}"
-                                    aria-expanded="false" aria-controls="collapse${index}">
-                                    <div class="row w-100">
-                                        <div class="col-4 placeholder"></div>
-                                        <div class="col-5">
-                                            <div class="d-flex placeholder">
+                    <div class="card-body" style="max-height: 73.5vh; overflow-y:scroll">
+                        @for ($i = 0; $i < 8; $i++)
+                            <div class="accordion accordion-flush" id="forecastAccordion">
+                                <h2 class="accordion-header " id="heading${index}">
+                                    <button class="accordion-button bg-transparent" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapse${index}"
+                                        aria-expanded="false" aria-controls="collapse${index}">
+                                        <div class="row w-100">
+                                            <div class="col-4 placeholder"></div>
+                                            <div class="col-5">
+                                                <div class="d-flex placeholder">
+                                                </div>
                                             </div>
+                                            <div class="col-3 text-end placeholder"></div>
                                         </div>
-                                        <div class="col-3 text-end placeholder"></div>
+                                    </button>
+                                </h2>
+                                <div class="accordion-collapse" aria-labelledby="heading${index}"
+                                    data-bs-parent="#forecastAccordion">
+                                    <div class="accordion-body">
                                     </div>
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse"
-                                aria-labelledby="heading${index}" data-bs-parent="#forecastAccordion">
-                                <div class="accordion-body">
                                 </div>
                             </div>
-                        </div>
+                        @endfor
                     </div>
                 </div>
             </div>
@@ -758,7 +717,7 @@
 
     <script>
         /* When the user clicks on the button,
-                                                                                                                                                                                                                                                                                                        toggle between hiding and showing the dropdown content */
+                                                                                                                                                                                                                                                                                                                toggle between hiding and showing the dropdown content */
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
