@@ -1,66 +1,151 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - README</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        h1, h2 { color: #2c3e50; }
+        code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 4px; color: #c0392b; }
+        .section { margin-bottom: 20px; }
+        ul { margin: 0; padding-left: 20px; }
+        .code-block { background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .important { color: #e74c3c; font-weight: bold; }
+        .note { font-style: italic; color: #7f8c8d; }
+        .link { color: #2980b9; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <p>A weather forecasting web application built with the Laravel framework, designed to provide up-to-date weather information based on city and country inputs.</p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+    <div class="section">
+        <h2>Features</h2>
+        <ul>
+            <li>Fetches current, hourly, and 16-day weather forecasts.</li>
+            <li>Caches previously searched locations for quick access.</li>
+            <li>Responsive UI with Bootstrap integration.</li>
+        </ul>
+    </div>
 
-## About Laravel
+    <div class="section">
+        <h2>Prerequisites</h2>
+        <p>Ensure you have the following installed:</p>
+        <ul>
+            <li>PHP (v8.1+ recommended)</li>
+            <li>Composer</li>
+            <li>MySQL or another Laravel-supported database</li>
+            <li>Node.js and npm (for front-end assets)</li>
+        </ul>
+    </div>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+    <div class="section">
+        <h2>Getting Started</h2>
+        <h3>1. Clone the Repository</h3>
+        <div class="code-block">
+            <code>git clone https://github.com/your-username/weather-app.git</code><br>
+            <code>cd weather-app</code>
+        </div>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+        <h3>2. Install Dependencies</h3>
+        <p>Make sure you have <a href="https://getcomposer.org/" target="_blank" class="link">Composer</a> installed, then run:</p>
+        <div class="code-block">
+            <code>composer install</code>
+        </div>
+        <p>Install Node.js dependencies for front-end assets:</p>
+        <div class="code-block">
+            <code>npm install</code>
+        </div>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+        <h3>3. Environment Setup</h3>
+        <p>Create a copy of the <code>.env</code> file from the example provided:</p>
+        <div class="code-block">
+            <code>cp .env.example .env</code>
+        </div>
 
-## Learning Laravel
+        <h3>4. Generate Application Key</h3>
+        <p>Generate the Laravel application key:</p>
+        <div class="code-block">
+            <code>php artisan key:generate</code>
+        </div>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+        <h3>5. Configure Database</h3>
+        <p>In the <code>.env</code> file, set up your database credentials:</p>
+        <div class="code-block">
+            <pre>DB_CONNECTION=mysql
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=weather_app
+        DB_USERNAME=root
+        DB_PASSWORD=your_password</pre>
+        </div>
+        <p class="note important">Note: Replace <code>DB_DATABASE</code>, <code>DB_USERNAME</code>, and <code>DB_PASSWORD</code> with your actual database name and credentials.</p>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+        <h3>6. Migrate the Database</h3>
+        <p>Run the migrations to set up the database tables:</p>
+        <div class="code-block">
+            <code>php artisan migrate</code>
+        </div>
 
-## Laravel Sponsors
+        <h3>7. API Setup</h3>
+        <p>Since this app relies on weather data, you will need an API key from a weather service (like OpenWeatherMap). Place your API key in the <code>.env</code> file:</p>
+        <div class="code-block">
+            <code>WEATHER_API_KEY=your_api_key</code>
+        </div>
+        <p class="note important">Replace <code>your_api_key</code> with your actual API key.</p>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+        <h3>8. Build Front-End Assets</h3>
+        <p>Compile the front-end assets with:</p>
+        <div class="code-block">
+            <code>npm run dev</code>
+        </div>
+        <p>To watch for changes in your front-end code, use:</p>
+        <div class="code-block">
+            <code>npm run watch</code>
+        </div>
 
-### Premium Partners
+        <h3>9. Serve the Application</h3>
+        <p>To start the application, use:</p>
+        <div class="code-block">
+            <code>php artisan serve</code>
+        </div>
+        <p>Your application should now be running at <a href="http://localhost:8000" target="_blank" class="link">http://localhost:8000</a>.</p>
+    </div>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+    <div class="section">
+        <h2>Additional Commands</h2>
+        <p>To update Composer dependencies, run:</p>
+        <div class="code-block">
+            <code>composer update</code>
+        </div>
+        <p>For more Laravel commands, see the <a href="https://laravel.com/docs" target="_blank" class="link">Laravel documentation</a>.</p>
+    </div>
 
-## Contributing
+    <div class="section">
+        <h2>Troubleshooting</h2>
+        <p>If you encounter issues with permissions, ensure that the <code>storage</code> and <code>bootstrap/cache</code> directories are writable:</p>
+        <div class="code-block">
+            <code>chmod -R 775 storage bootstrap/cache</code>
+        </div>
+    </div>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    <div class="section">
+        <h2>Contributing</h2>
+        <ol>
+            <li>Fork the repository.</li>
+            <li>Create a new branch (<code>git checkout -b feature/your-feature</code>).</li>
+            <li>Commit your changes (<code>git commit -am 'Add a new feature'</code>).</li>
+            <li>Push to the branch (<code>git push origin feature/your-feature</code>).</li>
+            <li>Create a new Pull Request.</li>
+        </ol>
+    </div>
 
-## Code of Conduct
+    <div class="section">
+        <h2>License</h2>
+        <p>This project is licensed under the MIT License. See the <code>LICENSE</code> file for more details.</p>
+    </div>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+</body>
+</html>
