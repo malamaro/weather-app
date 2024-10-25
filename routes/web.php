@@ -9,4 +9,8 @@ Route::get('/', [WeatherController::class, 'index']);
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 
+Route::post('/login', [LoginController::class, 'authenticate']);
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 Route::post('/weather-forecast', [WeatherController::class, 'getWeatherForecast'])->name('weather-forecast');

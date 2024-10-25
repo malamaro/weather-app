@@ -57,19 +57,21 @@ DB_PORT=3306
 DB_DATABASE=weather_app
 DB_USERNAME=root
 DB_PASSWORD=your_password</pre>
+
 </div>
 <p class="note important">Note: Replace <code>DB_DATABASE</code>, <code>DB_USERNAME</code>, and <code>DB_PASSWORD</code> with your actual database name and credentials.</p>
 
 <h3>6. Migrate the Database</h3>
 <p>Run the migrations to set up the database tables:</p>
 <div class="code-block">
-    <code>php artisan migrate</code>
+    <code>php artisan migrate:fresh --seed</code>
 </div>
 
 <h3>7. API Setup</h3>
-<p>Since this app relies on weather data, you will need an API key from a weather service (like OpenWeatherMap). Place your API key in the <code>.env</code> file:</p>
+<p>Since this app relies on weather data and location data, you will need an API key from a weather service (like OpenWeatherMap) and OpenCage. Place your API key in the <code>.env</code> file:</p>
 <div class="code-block">
-    <code>WEATHER_API_KEY=your_api_key</code>
+    WEATHER_BIT_API_KEY=your_key
+    OPENCAGE_API_KEY=your_key
 </div>
 <p class="note important">Replace <code>your_api_key</code> with your actual API key.</p>
 

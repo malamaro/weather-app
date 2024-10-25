@@ -58,10 +58,10 @@
 </head>
 
 <body>
-    <div class="container mb-5">
+    <div class="container px-0 mb-5">
         <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm rounded-0 border">
             <div class="container-fluid">
-                <a href="#" class="navbar-brand" href="#">Green Nature Foreast</a>
+                <a href="#" class="navbar-brand" href="#">Green Nature | Weather Foreast</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -72,14 +72,18 @@
                     </ul>
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-danger" type="submit">Login</button>
+                        @csrf
+                    </form>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button class="btn btn-danger" type="submit">Logout</button>
                     </form>
                 </div>
             </div>
         </nav>
     </div>
 
-    <div class="container mb-5">
+    <div class="container px-0 mb-5">
         <div class="row mb-2">
             <div class="col-md-8">
                 <div class="mb-3">
@@ -288,15 +292,20 @@
                         </div>
                     </div>
                     <div class="card-body" style="height: 73.5vh; overflow-y:scroll">
-                        <div class="list-group list-group-flush" id="forecastList">
-                            <!-- The forecast items will be appended here -->
-                        </div>
+                        <div class="accordion" id="forecastAccordion"></div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <style>
+        /* Hide the default Bootstrap accordion chevron */
+        .accordion-button::after {
+            display: none;
+        }
+    </style>
     <script>
         const weatherBitApiKey = 'c44417e75183453790f40d6ef4f8e7b6'; // Replace with your Weatherbit API key
         const openCageApiKey = 'c38fff3aae954903884d7f1f6738ca49'; // Replace with your OpenCage API key
@@ -589,38 +598,50 @@
                     const rawWeatherData = data.data;
 
                     // Transform the API data into the desired format and assign it to the global forecastData
-                    forecastData = rawWeatherData.map(dayData => ({
-                        day: getDayName(dayData.datetime), // Get the day of the week
-                        weather: dayData.weather.description, // Extract weather description
-                        temperature: `${Math.round(dayData.max_temp)}/${Math.round(dayData.min_temp)}` // Format temperature
+                    // Map the forecast data for easier access
+                    const forecastData = rawWeatherData.map(dayData => ({
+                        day: getDayName(dayData.datetime),
+                        weather: dayData.weather.description,
+                        maxTemp: Math.round(dayData.max_temp),
+                        minTemp: Math.round(dayData.min_temp),
+                        humidity: dayData.rh, // Humidity
+                        windSpeed: dayData.wind_spd.toFixed(1) // Wind speed in m/s
                     }));
-                    // Now that forecastData is ready, call the display function
-                    displayForecast(forecastData);
+
+                    const forecastAccordion = document.getElementById('forecastAccordion');
+                    forecastAccordion.innerHTML = ''; // Clear previous data
+
+                    forecastData.forEach((forecast, index) => {
+                        const forecastItem = document.createElement('div');
+                        forecastItem.classList.add('accordion-item');
+
+                        forecastItem.innerHTML = `
+                            <h2 class="accordion-header" id="heading${index}">
+                                <button class="accordion-button ${index !== 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0}" aria-controls="collapse${index}">
+                                    <div class="row w-100">
+                                        <div class="col">${forecast.day}</div>
+                                        <div class="col"><i class="bi bi-sun me-2"></i>${forecast.weather}</div>
+                                        <div class="col-3 text-end">${forecast.maxTemp}°/${forecast.minTemp}°</div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#forecastAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Weather:</strong> ${forecast.weather}</p>
+                                    <p><strong>Temperature:</strong> ${forecast.maxTemp}° / ${forecast.minTemp}°</p>
+                                    <p><strong>Humidity:</strong> ${forecast.humidity}%</p>
+                                    <p><strong>Wind Speed:</strong> ${forecast.windSpeed} m/s</p>
+                                </div>
+                            </div>
+                        `;
+
+                        // Append the new forecast item to the accordion
+                        forecastAccordion.appendChild(forecastItem);
+                    });
                 })
                 .catch(error => {
                     console.error('Error fetching weather data:', error);
                 });
-        }
-
-        // Function to dynamically generate the forecast list
-        function displayForecast(forecastData) {
-            const forecastList = document.getElementById('forecastList');
-            forecastList.innerHTML = '';
-            forecastData.forEach(forecast => {
-                const forecastItem = document.createElement('a');
-                forecastItem.classList.add('list-group-item', 'list-group-item-action', 'py-4');
-
-                // Add the forecast details in a row
-                forecastItem.innerHTML = `
-                <div class="row">
-                    <div class="col">${forecast.day}</div>
-                    <div class="col"><i class="bi bi-sun me-2"></i>${forecast.weather}</div>
-                    <div class="col-3 text-end ">${forecast.temperature}</div>
-                </div>
-            `;
-                // Append the new forecast item to the list
-                forecastList.appendChild(forecastItem);
-            });
         }
     </script>
 
@@ -631,7 +652,7 @@
 
     <script>
         /* When the user clicks on the button,
-                                                                                                                                                                                                                    toggle between hiding and showing the dropdown content */
+                                                                                                                                                                                                                                            toggle between hiding and showing the dropdown content */
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }

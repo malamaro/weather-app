@@ -15,18 +15,19 @@
             <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-body">
-                        <form>
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                <input type="email" class="form-control" id="exampleInputEmail1" name="email"
                                     aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1">
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password">
                             </div>
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember">
                                 <label class="form-check-label" for="exampleCheck1">Remember me</label>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Submit</button>
