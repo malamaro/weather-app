@@ -50,14 +50,14 @@
 <h3>5. Configure Database</h3>
 <p>In the <code>.env</code> file, set up your database credentials:</p>
 <div class="code-block">
-    <pre>DB_CONNECTION=mysql
-
+    <pre>
+DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=weather_app
 DB_USERNAME=root
-DB_PASSWORD=your_password</pre>
-
+DB_PASSWORD=your_password
+    </pre>
 </div>
 <p class="note important">Note: Replace <code>DB_DATABASE</code>, <code>DB_USERNAME</code>, and <code>DB_PASSWORD</code> with your actual database name and credentials.</p>
 
@@ -70,8 +70,10 @@ DB_PASSWORD=your_password</pre>
 <h3>7. API Setup</h3>
 <p>Since this app relies on weather data and location data, you will need an API key from a weather service (like OpenWeatherMap) and OpenCage. Place your API key in the <code>.env</code> file:</p>
 <div class="code-block">
-    WEATHER_BIT_API_KEY=your_key
-    OPENCAGE_API_KEY=your_key
+    <pre>
+WEATHER_BIT_API_KEY=your_key
+OPENCAGE_API_KEY=your_key
+    </pre>
 </div>
 <p class="note important">Replace <code>your_api_key</code> with your actual API key.</p>
 
