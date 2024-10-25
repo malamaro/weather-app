@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WeatherController extends Controller
 {
@@ -10,7 +11,7 @@ class WeatherController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     function index()
     {
         return view('index');
@@ -26,7 +27,7 @@ class WeatherController extends Controller
         $newLocation = ['city' => $city, 'country_code' => $countryCode];
 
         // Retrieve the existing locations from the cache or start with an empty array
-        $locations = cache()->get('locations', []);
+        $locations = cache()->get(Auth::user()->id . '-locations', []);
 
         // Check if the location already exists
         $existingIndex = null;
@@ -46,7 +47,7 @@ class WeatherController extends Controller
         array_unshift($locations, $newLocation);
 
         // Store the updated locations list back in the cache
-        cache()->put('locations', $locations);
+        cache()->put(Auth::user()->id . '-locations', $locations);
 
         // Return the updated list of cached locations
         return response()->json(['locations' => $locations]);

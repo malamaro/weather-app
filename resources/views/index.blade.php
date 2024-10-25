@@ -121,7 +121,7 @@
                     <li class="px-2"><input type="text" class="form-control" placeholder="Search.." id="myInput"
                             onkeyup="filterFunction()"></li>
                     @php
-                        $locations = cache()->get('locations', []); // Use [] as a default if no locations are found
+                        $locations = cache()->get(Auth::user()->id . '-locations', []); // Use [] as a default if no locations are found
                     @endphp
                     @if (!empty($locations))
                         @foreach ($locations as $location)
@@ -140,18 +140,8 @@
         </div>
         <div class="row d-flex justify-content-between">
             <div class="col-md-8">
-                <div class="row mb-3" id="">
-                    <div class="col placeholder-glow">
-                        <div class="mb-5">
-                            <h1><span class="cityName"></span></h1>
-                            <span class="weatherDescription">Some text here</span> •
-                            <span class="weatherTime mb-5"></span>
-                        </div>
-                        <h1 class="weatherTemp" class="placeholder col-3"></h1>
-                    </div>
-                    <div class="col text-start">
-                        <i class="bi bi-sun text-warning" style="font-size: 150px"></i>
-                    </div>
+                <div class="row mb-3" id="todayWeatherData">
+
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
@@ -492,7 +482,21 @@
                                     </div>
                                 </div>
                             </div>`;
+                            
+                        let todayWeatherData = `
+                                <div class="col placeholder-glow">
+                                    <div class="mb-5">
+                                        <h1><span>${weatherData.city_name}</span></h1>
+                                        <span class="weatherDescription">${formatDateTime(weatherData.ob_time)}</span>
+                                    </div>
+                                    <h1 class="weatherTemp" class="placeholder col-3">${weatherData.temp}°C</h1>
+                                </div>
+                                <div class="col text-start">
+                                    <i class="bi ${getWeatherIcon(weatherData.weather.description)} text-black-50" style="font-size: 150px"></i>
+                                </div>
+                            `;
 
+                        document.getElementById('todayWeatherData').innerHTML = todayWeatherData
                         document.getElementById('airConditionWeatherDisplay').innerHTML = airConditionWeatherData
 
                         document.getElementById('errorDisplay').classList.add('d-none');
@@ -504,6 +508,25 @@
                 .catch(error => {
                     console.log(error);
                 });
+        }
+
+        function formatDateTime(dateTime) {
+            // Original date string
+            const dateString = "2024-10-25 14:05";
+
+            // Replace the space with "T" to make it a valid ISO string format for parsing
+            const date = new Date(dateString.replace(" ", "T"));
+
+            // Convert to locale string
+            return formattedDate = date.toLocaleString('en-US', {
+                weekday: 'long', // Shows day of the week, like "Friday"
+                year: 'numeric',
+                month: 'long', // Shows full month name
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
         }
 
         function getTodayHourlyWeatherForecast(countryCode, city) {
@@ -532,15 +555,17 @@
                     let todayHourlyForecastItems = document.getElementById('currentWeatherDisplay');
 
                     todayHourlyForecastItems.innerHTML = '';
-
+                    
                     forecastData.forEach(data => {
+                        const iconClass = getWeatherIcon(data.weather); // Get icon based on description
+
                         todayHourlyForecastItems.innerHTML += `
                         <div class="col-md-2">
                             <div class="card text-center border-0 px-0">
                                 <div class="card-body px-0">
                                     <span>` + data.time + `</span>
                                     <br>
-                                    <i class="bi bi-cloud-hail fs-2"></i>
+                                    <i class="bi ${iconClass} fs-2"></i>
                                     <br>
                                     <span >` + data.temperature + `</span>
                                 </div>
@@ -580,6 +605,46 @@
             getTodayHourlyWeatherForecast(countryCode, city);
         }
 
+        // List of weather descriptions and their corresponding Bootstrap icons
+        const weatherIcons = {
+            "Clear sky": "bi-sun",
+            "Few clouds": "bi-cloud-sun",
+            "Scattered clouds": "bi-cloud",
+            "Broken clouds": "bi-cloudy",
+            "Overcast clouds": "bi-cloud-fill",
+            "Light rain": "bi-cloud-drizzle",
+            "Moderate rain": "bi-cloud-rain",
+            "Heavy rain": "bi-cloud-rain-heavy",
+            "Freezing rain": "bi-snow2",
+            "Light snow": "bi-cloud-snow",
+            "Snow": "bi-snow",
+            "Heavy snow": "bi-snow3",
+            "Sleet": "bi-cloud-hail",
+            "Shower rain": "bi-cloud-drizzle",
+            "Thunderstorm": "bi-cloud-lightning",
+            "Thunderstorm with rain": "bi-cloud-lightning-rain",
+            "Thunderstorm with hail": "bi-cloud-lightning-rain",
+            "Mist": "bi-cloud-fog2",
+            "Haze": "bi-cloud-fog",
+            "Fog": "bi-cloud-fog-fill",
+            "Dust": "bi-cloud-dust",
+            "Sand": "bi-cloud-dust",
+            "Smoke": "bi-cloud-smoke",
+            "Tornado": "bi-cloud-tornado",
+            "Hurricane": "bi-cloud-hurricane",
+            "Tropical storm": "bi-cloud-hurricane",
+            "Drizzle": "bi-cloud-drizzle",
+            "Windy": "bi-wind",
+            "Cold": "bi-thermometer-snow",
+            "Hot": "bi-thermometer-sun"
+        };
+
+
+        // Function to get the appropriate icon based on weather description
+        function getWeatherIcon(description) {
+            return weatherIcons[description] || "bi-question-circle"; // Fallback icon
+        }
+
         async function get16DayWeatherForecast(countryCode, city) {
             const getDayName = (dateString) => {
                 const date = new Date(dateString);
@@ -605,13 +670,17 @@
                         maxTemp: Math.round(dayData.max_temp),
                         minTemp: Math.round(dayData.min_temp),
                         humidity: dayData.rh, // Humidity
-                        windSpeed: dayData.wind_spd.toFixed(1) // Wind speed in m/s
+                        windSpeed: dayData.wind_spd.toFixed(1), // Wind speed in m/s
+                        uvIndex: dayData.uv,
+                        precip: dayData.precip
                     }));
 
                     const forecastAccordion = document.getElementById('forecastAccordion');
                     forecastAccordion.innerHTML = ''; // Clear previous data
 
                     forecastData.forEach((forecast, index) => {
+                        const iconClass = getWeatherIcon(forecast.weather); // Get icon based on description
+
                         const forecastItem = document.createElement('div');
                         forecastItem.classList.add('accordion-item');
 
@@ -619,8 +688,13 @@
                             <h2 class="accordion-header" id="heading${index}">
                                 <button class="accordion-button ${index !== 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0}" aria-controls="collapse${index}">
                                     <div class="row w-100">
-                                        <div class="col">${forecast.day}</div>
-                                        <div class="col"><i class="bi bi-sun me-2"></i>${forecast.weather}</div>
+                                        <div class="col-4">${forecast.day}</div>
+                                        <div class="col-5">
+                                            <div class="d-flex ">
+                                                <i class="bi ${iconClass} me-2"></i>
+                                            ${forecast.weather}
+                                            </div>
+                                        </div>
                                         <div class="col-3 text-end">${forecast.maxTemp}°/${forecast.minTemp}°</div>
                                     </div>
                                 </button>
@@ -631,6 +705,8 @@
                                     <p><strong>Temperature:</strong> ${forecast.maxTemp}° / ${forecast.minTemp}°</p>
                                     <p><strong>Humidity:</strong> ${forecast.humidity}%</p>
                                     <p><strong>Wind Speed:</strong> ${forecast.windSpeed} m/s</p>
+                                    <p><strong>UV Index:</strong> ${forecast.uvIndex}</p>
+                                    <p><strong>Precipitation:</strong> ${forecast.precip}</p>
                                 </div>
                             </div>
                         `;
@@ -652,7 +728,7 @@
 
     <script>
         /* When the user clicks on the button,
-                                                                                                                                                                                                                                            toggle between hiding and showing the dropdown content */
+                                                                                                                                                                                                                                                                                                toggle between hiding and showing the dropdown content */
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
