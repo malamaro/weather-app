@@ -141,7 +141,17 @@
         <div class="row d-flex justify-content-between">
             <div class="col-md-8">
                 <div class="row mb-3" id="todayWeatherData">
-
+                    <div class="col placeholder-glow">
+                        <div class="mb-5">
+                            <h1><span class="placeholder col-4"></span></h1>
+                            <span class="placeholder col-8"></span>
+                        </div>
+                        <h1 class="placeholder col-3"></h1>
+                    </div>
+                    <div class="col text-start">
+                        <i class="bi ${getWeatherIcon(weatherData.weather.description)} text-black-50"
+                            style="font-size: 150px"></i>
+                    </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
@@ -275,14 +285,34 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card shadow" style="height: 100%">
+                <div class="card shadow placeholder-glow" style="height: 100%">
                     <div class="card-header bg-transparent border-0">
                         <div class="mb-0 mt-3 d-flex justify-content-between px-3">
                             <h6 class="card-title text-black-50">16 - DAY FORECAST</h6>
                         </div>
                     </div>
                     <div class="card-body" style="height: 73.5vh; overflow-y:scroll">
-                        <div class="accordion" id="forecastAccordion"></div>
+                        <div class="accordion accordion-flush" id="forecastAccordion">
+                            <h2 class="accordion-header" id="heading${index}">
+                                <button class="accordion-button" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapse${index}"
+                                    aria-expanded="false" aria-controls="collapse${index}">
+                                    <div class="row w-100">
+                                        <div class="col-4 placeholder"></div>
+                                        <div class="col-5">
+                                            <div class="d-flex placeholder">
+                                            </div>
+                                        </div>
+                                        <div class="col-3 text-end placeholder"></div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div class="accordion-collapse"
+                                aria-labelledby="heading${index}" data-bs-parent="#forecastAccordion">
+                                <div class="accordion-body">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -482,7 +512,7 @@
                                     </div>
                                 </div>
                             </div>`;
-                            
+
                         let todayWeatherData = `
                                 <div class="col placeholder-glow">
                                     <div class="mb-5">
@@ -555,7 +585,7 @@
                     let todayHourlyForecastItems = document.getElementById('currentWeatherDisplay');
 
                     todayHourlyForecastItems.innerHTML = '';
-                    
+
                     forecastData.forEach(data => {
                         const iconClass = getWeatherIcon(data.weather); // Get icon based on description
 
@@ -728,7 +758,7 @@
 
     <script>
         /* When the user clicks on the button,
-                                                                                                                                                                                                                                                                                                toggle between hiding and showing the dropdown content */
+                                                                                                                                                                                                                                                                                                        toggle between hiding and showing the dropdown content */
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
