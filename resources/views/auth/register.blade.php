@@ -16,33 +16,40 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <div class="mb-3 text-center">
-                            <h3>Login</h3>
+                            <h3>Register</h3>
                         </div>
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('register') }}">
                             @csrf
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                                 <input type="email" class="form-control" id="exampleInputEmail1" name="email"
-                                    aria-describedby="emailHelp">
+                                    required aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password"
+                                    required>
                             </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember">
-                                <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="exampleInputPassword2"
+                                    name="password_confirmation" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Submit</button>
+                            <button type="submit" class="btn btn-primary w-100">Register</button>
                         </form>
                     </div>
                 </div>
-                <div class="mb-3 mt-4">
-                    <span>Do not have an account? <a href="{{ route('register') }}">Register here</a></span>
+                <div class="mb-3 mt-4 text-center">
+                    <span>Already have an account? <a href="{{ route('login') }}">Login here</a></span>
                 </div>
             </div>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">

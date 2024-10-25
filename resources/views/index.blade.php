@@ -91,14 +91,15 @@
                 </div>
                 <form id="weatherForm" method="POST">
                     @csrf
-                    <div class="row mb-3">
+                    <div class="row mb-3 d-flex align-items-end">
                         <div class="col-sm-6 col-md-4">
-                            <input type="text" class="form-control shadow mb-2" id="city" name="city"
-                                placeholder="Lusaka" placeholder="Enter city" required>
+                            <label for="" class="form-label">City</label>
+                            <input type="text" class="form-control shadow" id="city" name="city"
+                                placeholder="e.g Lusaka" required>
                         </div>
-                        <div class="col-sm-6 col-md-4 mb-2">
-                            <input type="text" class="form-control shadow" id="country" name="country_code"
-                                placeholder="ZM" placeholder="Enter country code" required>
+                        <div class="col-sm-6 col-md-4">
+                            <label for="" class="form-label">Country Code</label>
+                            <input type="text" class="form-control shadow" id="country" name="country_code" placeholder="e.g ZM" required>
                         </div>
                         <div class="col">
                             <button type="submit" class="btn btn-primary"><i class="bi bi-search me-2 fw-bold"></i>
