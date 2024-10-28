@@ -86,6 +86,11 @@
     <div class="container px-0 mb-5">
         <div class="row mb-2">
             <div class="col-md-8">
+                <!-- Error Display -->
+                <div id="errorDisplay" class="alert alert-danger alert-dismissible d-none fade show" role="alert">
+                    <p class="text-danger mb-0">Error fetching weather data. Please try again.</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <div class="mb-3">
                     <h6>Your location: <span class="cityName"></span>, <span class="countryCode"></span></h6>
                 </div>
@@ -99,7 +104,8 @@
                         </div>
                         <div class="col-sm-6 col-md-4">
                             <label for="" class="form-label">Country Code</label>
-                            <input type="text" class="form-control shadow" id="country" name="country_code" placeholder="e.g ZM" required>
+                            <input type="text" class="form-control shadow" id="country" name="country_code"
+                                placeholder="e.g ZM" required>
                         </div>
                         <div class="col">
                             <button type="submit" class="btn btn-primary"><i class="bi bi-search me-2 fw-bold"></i>
@@ -233,10 +239,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Error Display -->
-                                <div id="errorDisplay" class="d-none">
-                                    <p class="text-danger">Error fetching weather data. Please try again.</p>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -249,7 +252,7 @@
                             <h6 class="card-title text-black-50">16 - DAY FORECAST</h6>
                         </div>
                     </div>
-                    <div class="card-body" style="max-height: 73.5vh; overflow-y:scroll">
+                    <div class="card-body pb-0" style="max-height: 73.5vh; overflow-y:scroll">
                         @for ($i = 0; $i < 8; $i++)
                             <div class="accordion accordion-flush" id="forecastAccordion">
                                 <h2 class="accordion-header " id="heading${index}">
@@ -399,6 +402,7 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Request failed: ", textStatus, errorThrown);
+                    document.getElementById('errorDisplay').classList.remove('d-none');
                 }
             });
         });
@@ -491,7 +495,7 @@
 
                         document.getElementById('errorDisplay').classList.add('d-none');
                     } else {
-                        document.getElementById('weatherDisplay').classList.add('d-none');
+                        // document.getElementById('weatherDisplay').classList.add('d-none');
                         document.getElementById('errorDisplay').classList.remove('d-none');
                     }
                 })
@@ -574,7 +578,6 @@
     <script>
         let forecastData = []; // Declare globally and initialize as an empty array
         document.addEventListener('DOMContentLoaded', () => {
-
             weatherForecast();
         });
 
@@ -614,6 +617,7 @@
             "Thunderstorm": "bi-cloud-lightning",
             "Thunderstorm with rain": "bi-cloud-lightning-rain",
             "Thunderstorm with hail": "bi-cloud-lightning-rain",
+            "Thunderstorm with heavy rain": "bi-cloud-lightning-rain",
             "Mist": "bi-cloud-fog2",
             "Haze": "bi-cloud-fog",
             "Fog": "bi-cloud-fog-fill",
@@ -718,7 +722,7 @@
 
     <script>
         /* When the user clicks on the button,
-                                                                                                                                                                                                                                                                                                                toggle between hiding and showing the dropdown content */
+                                                                                                                                                                                                                                                                                                                            toggle between hiding and showing the dropdown content */
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
